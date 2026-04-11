@@ -1,5 +1,7 @@
 #include "hashtable.h"
 
+#include "general/debug.h"
+
 #include <stdio.h>
 
 int main(void){
@@ -11,9 +13,14 @@ int main(void){
 
     hashTableInsert(&hashTable, testStr);
 
-    for(size_t i = 0; i < hashTable.size; i++){
-        listGraphDump(&hashTable.cells[i].value);
-    }
+    // for(size_t i = 0; i < hashTable.size; i++){
+    //     listGraphDump(&hashTable.cells[i].value);
+    // }
+
+    int cellNum = 0;
+    hashTableFind(&hashTable, testStr, &cellNum);
+
+    lprintf("foundCellNum = %d\n", cellNum);
 
     hashTableDtor(&hashTable);
 

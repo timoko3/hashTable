@@ -21,6 +21,7 @@ struct hashTable_t{
 
 bool hashTableCtor(hashTable_t* hashTable);
 bool hashTableInsert(hashTable_t* hashTable, char* str);
+bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum);
 bool hashTableDtor(hashTable_t* hashTable);
 
 #endif /* HASH_TABLE_H */
