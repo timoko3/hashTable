@@ -1,12 +1,14 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
+#include "cashFriendlyList/list.h"
+
 #include <stddef.h>
 
 typedef int (*hashFunction_t) (char* str);
 
 struct hashTableCell_t{
-    char* value;
+    list_t value;
     int   hash;
 };
 

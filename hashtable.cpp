@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "hashTable.h"
 #include "DSL.h"
 
 #include <malloc.h>
@@ -15,12 +15,18 @@ bool hashTableCtor(hashTable_t* hashTable){
     HASH_TABLE_FUNCTION(hashTable)        = basicHashFunction;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_SIZE_C, sizeof(hashTableCell_t));
+
+    for(size_t i = 0; i < HASH_TABLE_SIZE_C; i++){
+        HASH_TABLE_CELLS(hashTable)[i].value.capacity = 3;
+        listCtor(&HASH_TABLE_CELLS(hashTable)[i].value);
+    }
+
     assert(HASH_TABLE_CELLS(hashTable));
 
     return true;
 }
 
-bool hashTableAdd(hashTable_t* hashTable, char* str){
+bool hashTableInsert(hashTable_t* hashTable, char* str){
     assert(hashTable);
     assert(str);
 
@@ -28,12 +34,20 @@ bool hashTableAdd(hashTable_t* hashTable, char* str){
 
     hashTableCell_t curCell = HASH_TABLE_CELLS(hashTable)[cellNumber];
     
-    
+    listInsertToTail(&curCell.value, cellNumber);
 
     return true;
 }
 
+// bool hashTableFind(hashTable_t* hashTable, char* str){
+
+// }
+
 bool hashTableDtor(hashTable_t* hashTable){
+    for(size_t i = 0; i < HASH_TABLE_SIZE_C; i++){
+        listDtor(&HASH_TABLE_CELLS(hashTable)[i].value);
+    }
+
     free(HASH_TABLE_CELLS(hashTable));         
 
     return true;
