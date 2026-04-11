@@ -1,6 +1,9 @@
 #include "hashTable.h"
 #include "DSL.h"
 
+#define DEBUG
+#include "general/debug.h"
+
 #include <malloc.h>
 #include <assert.h>
 
@@ -32,9 +35,11 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
 
     size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str);
 
+    LPRINTF("cellNumber = %llu", cellNumber);
+
     hashTableCell_t curCell = HASH_TABLE_CELLS(hashTable)[cellNumber];
     
-    listInsertToTail(&curCell.value, cellNumber);
+    listInsertToTail(&curCell.value, str);
 
     return true;
 }

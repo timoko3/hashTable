@@ -5,6 +5,7 @@
 #include "general/debug.h"
 
 #include <malloc.h>
+#include <string.h>
 #include <assert.h>
 
 #define verify(list) if(verifyList(list, __FUNCTION__, __FILE__, __LINE__) != PROCESS_OK) return list->status.type
@@ -23,7 +24,7 @@ listStatus listCtor(list_t* list){
     list->elem = (listElem_t*) calloc(list->capacity, sizeof(listElem_t));
     assert(list->elem);
     
-    listInit(list);
+    listInit(list, 0);
     
     list->status.type = PROCESS_OK;
     return PROCESS_OK;
@@ -31,6 +32,11 @@ listStatus listCtor(list_t* list){
 
 listStatus listDtor(list_t* list){
     assert(list);
+
+    for(size_t i = 0; i < list->capacity; i++){
+        poisonMemory(list->elem[i].data, sizeof(char) * listValueMaxLen);
+        free(list->elem[i].data);
+    }
 
     poisonMemory(list->elem, sizeof(listElem_t) * list->capacity);
     free(list->elem);
@@ -56,7 +62,8 @@ listStatus listInsertAfter(list_t* list, int insIndex, listVal_t insValue){
         reallocateList(list);
     }
 
-    *data(list, *freeInd(list)) = insValue;
+    strcpy(*data(list, *freeInd(list)), insValue);
+
     int insertedCellPhysInd = *freeInd(list);
     *freeInd(list) = *next(list, *freeInd(list));
 
@@ -115,7 +122,7 @@ listStatus listDelete(list_t* list, int deleteIndex){
     *next(list, *prev(list, deleteIndex)) = *next(list, deleteIndex);
     *prev(list, *next(list, deleteIndex)) = *prev(list, deleteIndex);
 
-    *data(list, deleteIndex) = LIST_POISON;
+    strcpy(*data(list, deleteIndex), LIST_POISON);
     *next(list, deleteIndex) = *freeInd(list);
     *prev(list, deleteIndex) = *tail(list);
 
@@ -139,14 +146,23 @@ static listStatus listInit(list_t* list, size_t startIndex){
 
     static size_t initCount = 0;
 
+    for(int allocInd = startIndex; allocInd < list->capacity; allocInd++){
+        *data(list, allocInd) = (char*) calloc(listValueMaxLen, sizeof(char));
+        assert(*data(list, allocInd));
+        
+        lprintf("memAllocated = %llu\n", malloc_usable_size(*data(list, allocInd)));
+    }
+
     for(size_t fillInd = startIndex; fillInd < list->capacity; fillInd++){
-        *data(list, (int) fillInd) = LIST_POISON;
+        lprintf("fillInd = %d\n", (int) fillInd);
+
+        strcpy(*data(list, (int) fillInd), LIST_POISON);
         *next(list, (int) fillInd) = (int) fillInd + 1;
         *prev(list, (int) fillInd) = (int) fillInd - 1;
     }
 
-    if(initCount == 0){
-        *data(list, 0) = LIST_POISON;
+    if(startIndex == 0){
+        strcpy(*data(list, 0),  LIST_POISON);
         *head(list) = 0;
         *tail(list) = 0;
     }

@@ -6,6 +6,8 @@
 
 // #define DEBUG
 
+const size_t listValueMaxLen = 64;
+
 listStatus listCtor(list_t* list);
 listStatus listDtor(list_t* list);
 
