@@ -8,14 +8,13 @@
 
 // #define DEBUG
 
-static char* getTextToBuffer(FILE* inputFile, size_t fileSize);
 static myString* divideBufferToStringsStructure(char* buffer, size_t nStrings);
 
 #ifdef DEBUG
 static void printBuffer(char* buffer);
 #endif /* DEBUG */
 
-int parseStringsFile(data_t* data, const char* fileName){
+int parseStringsFile(textData_t* data, const char* fileName){
     assert(data);
     assert(fileName);
 
@@ -71,7 +70,7 @@ FILE* myOpenFile(fileDescription* file){
     return filePtr;
 }
 
-static char* getTextToBuffer(FILE* inputFIle, size_t fileSize){
+char* getTextToBuffer(FILE* inputFIle, size_t fileSize){
     assert(inputFIle);
 
     char* buffer = (char*) calloc(fileSize + SIZE_OF_END_FILE, sizeof(char)); 
@@ -118,6 +117,43 @@ static myString* divideBufferToStringsStructure(char* buffer, size_t nStrings){
     return strings;
 }
 
+words_t divideBufferToWords(char* buffer, size_t bufferSize){
+    assert(buffer);
+    
+    size_t nWords = countWords(buffer, bufferSize);
+
+    myString* wordPtrs = (myString*) calloc(nWords + 1, sizeof(myString));
+    assert(wordPtrs);
+
+    wordPtrs[0].ptr = buffer;
+    
+    for(size_t i = 1; i < nWords - 1; i++){
+        buffer = strchr(buffer, ' ');
+        wordPtrs[i].ptr = buffer + 1;
+        wordPtrs[i - 1].len = (size_t) buffer - (size_t) wordPtrs[i - 1].ptr;
+    }
+
+    words_t words =  {
+        wordPtrs,
+        nWords
+    };
+    
+    return words;
+}
+
+size_t countWords(char* buffer, size_t bufferSize){
+    assert(buffer);
+
+    size_t amountWords = 1;
+
+    while(buffer = strchr(buffer, ' ')){
+        amountWords++;
+    }
+
+
+    return amountWords;
+}
+
 void writeOpcode(buffer_t* buffer, const char* fileName){
     assert(buffer);
     assert(fileName);
@@ -149,6 +185,7 @@ bool getIntNumsToBuffer(fileDescription file, size_t fileSize, int** buffer){
     
     return true;
 }
+
 
 #ifdef DEBUG
 static void printBuffer(char* buffer){
