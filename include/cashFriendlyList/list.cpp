@@ -11,7 +11,7 @@
 
 static listStatus listInit(list_t* list, size_t startIndex = 1);
 static listStatus reallocateList(list_t* list); 
-static void placeNodeRight(list_t* list, listVal_t logicalInd, listVal_t physicalInd);
+static void placeNodeRight(list_t* list, int logicalInd, int physicalInd);
 
 listStatus listCtor(list_t* list){
     assert(list);
@@ -44,7 +44,7 @@ listStatus listDtor(list_t* list){
     return PROCESS_OK;
 }
 
-listStatus listInsertAfter(list_t* list, listVal_t insIndex, listVal_t insValue){
+listStatus listInsertAfter(list_t* list, int insIndex, listVal_t insValue){
     assert(list);
 
     #ifdef DEBUG
@@ -57,7 +57,7 @@ listStatus listInsertAfter(list_t* list, listVal_t insIndex, listVal_t insValue)
     }
 
     *data(list, *freeInd(list)) = insValue;
-    listVal_t insertedCellPhysInd = *freeInd(list);
+    int insertedCellPhysInd = *freeInd(list);
     *freeInd(list) = *next(list, *freeInd(list));
 
     *next(list, insertedCellPhysInd) = *next(list, insIndex);
@@ -79,7 +79,7 @@ listStatus listInsertAfter(list_t* list, listVal_t insIndex, listVal_t insValue)
     return PROCESS_OK;
 }
 
-listStatus listInsertBefore(list_t* list, listVal_t insIndex, listVal_t insValue){
+listStatus listInsertBefore(list_t* list, int insIndex, listVal_t insValue){
     assert(list);
 
     insIndex = *prev(list, insIndex);
@@ -104,7 +104,7 @@ listStatus lisInsertToHead(list_t* list, listVal_t insValue){
     return PROCESS_OK;
 }
 
-listStatus listDelete(list_t* list, listVal_t deleteIndex){
+listStatus listDelete(list_t* list, int deleteIndex){
     assert(list);
 
     #ifdef DEBUG
@@ -140,9 +140,9 @@ static listStatus listInit(list_t* list, size_t startIndex){
     static size_t initCount = 0;
 
     for(size_t fillInd = startIndex; fillInd < list->capacity; fillInd++){
-        *data(list, (listVal_t) fillInd) = LIST_POISON;
-        *next(list, (listVal_t) fillInd) = (listVal_t) fillInd + 1;
-        *prev(list, (listVal_t) fillInd) = (listVal_t) fillInd - 1;
+        *data(list, (int) fillInd) = LIST_POISON;
+        *next(list, (int) fillInd) = (int) fillInd + 1;
+        *prev(list, (int) fillInd) = (int) fillInd - 1;
     }
 
     if(initCount == 0){
@@ -164,8 +164,8 @@ listStatus listLinearize(list_t* list){
     log(list, "before %s", "linearization");
     #endif /* DEBUG */
 
-    listVal_t logicalInd = *head(list);
-    for(listVal_t physicalInd = *head(list); (*data(list, physicalInd) != LIST_POISON); physicalInd = *next(list, physicalInd)){
+    int logicalInd = *head(list);
+    for(int physicalInd = *head(list); (*data(list, physicalInd) != LIST_POISON); physicalInd = *next(list, physicalInd)){
         $
         if(logicalInd != physicalInd){
             $
@@ -195,7 +195,7 @@ listStatus listFreeUnusedMem(list_t* list){
     log(list, "before %s", "linearization");
     #endif /* DEBUG */
 
-    listVal_t curCellInd = *head(list);
+    int curCellInd = *head(list);
     for(; (*next(list, curCellInd) != 0); curCellInd = *next(list, curCellInd)){
         $
         continue;
@@ -229,8 +229,8 @@ listStatus listOptimize(list_t* list){
 }
 
 static void placeNodeRight(list_t* list, 
-        listVal_t logicalInd, 
-        listVal_t physicalInd){
+        int logicalInd, 
+        int physicalInd){
     assert(list);
             
     if(*data(list, logicalInd) == LIST_POISON) *freeInd(list) = physicalInd;

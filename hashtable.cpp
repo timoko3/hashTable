@@ -7,12 +7,12 @@
 const size_t HASH_TABLE_SIZE_C            = 100; 
 // const size_t HASH_TABLE_AMOUNT_ELEMENTS_C = 50;
 
-int basicHashFunction(char* str);
+unsigned long gnuHash(char* str);
 
 bool hashTableCtor(hashTable_t* hashTable){
     HASH_TABLE_SIZE(hashTable)            = HASH_TABLE_SIZE_C; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
-    HASH_TABLE_FUNCTION(hashTable)        = basicHashFunction;
+    HASH_TABLE_FUNCTION(hashTable)        = gnuHash;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_SIZE_C, sizeof(hashTableCell_t));
 
@@ -53,8 +53,15 @@ bool hashTableDtor(hashTable_t* hashTable){
     return true;
 }
 
-int basicHashFunction(char* str){
+unsigned long gnuHash(char* str){
     assert(str);
 
-    return 0;
+    unsigned long hash = 5381;
+
+    for (unsigned char c = *str; c != '\0'; c = *++str) {
+        hash = (hash << 5) + hash + c; // h * 33 + c
+    }
+
+    return hash % HASH_TABLE_SIZE_C;
 }
+

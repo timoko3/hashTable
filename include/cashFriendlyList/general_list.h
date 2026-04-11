@@ -7,9 +7,9 @@
 
 #define log(list1, text, ...) htmlLog(list1, __FILE__, __FUNCTION__, __LINE__, text, ##__VA_ARGS__)
 
-typedef int listVal_t;
+typedef char* listVal_t;
 
-const listVal_t LIST_POISON = INT_MAX;
+const listVal_t LIST_POISON = "adkjadasdoahdaoidahdiaodhaoiahdaoidhasiodahdioadhas";
 
 enum listStatus{
     PROCESS_OK,
@@ -40,23 +40,23 @@ static struct listStatusDescription listStatuses[]{
 
 struct listElem_t{
     listVal_t data;
-    listVal_t next;
-    listVal_t prev;
+    int next;
+    int prev;
 };
 
 struct list_t{
     listElem_t*            elem;
-    listVal_t              freeCellInd;
+    int              freeCellInd;
     size_t                 size;
     size_t                 capacity;
     listStatusDescription  status;
 };
 
-listVal_t* data(list_t* list, listVal_t index);
-listVal_t* next(list_t* list, listVal_t index);
-listVal_t* prev(list_t* list, listVal_t index);
-listVal_t* head(list_t* list);
-listVal_t* tail(list_t* list);
-listVal_t* freeInd(list_t* list);
+listVal_t* data(list_t* list, int index);
+int* next(list_t* list, int index);
+int* prev(list_t* list, int index);
+int* head(list_t* list);
+int* tail(list_t* list);
+int* freeInd(list_t* list);
 
 #endif /* GENERAL_LIST_H */

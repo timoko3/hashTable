@@ -9,11 +9,11 @@
 listStatus listCtor(list_t* list);
 listStatus listDtor(list_t* list);
 
-listStatus listInsertAfter(list_t* list, listVal_t index, listVal_t insValue);
-listStatus listInsertBefore(list_t* list, listVal_t insIndex, listVal_t insValue);
+listStatus listInsertAfter(list_t* list, int index, listVal_t insValue);
+listStatus listInsertBefore(list_t* list, int insIndex, listVal_t insValue);
 listStatus lisInsertToHead(list_t* list, listVal_t insValue);
 listStatus listInsertToTail(list_t* list, listVal_t insValue);
-listStatus listDelete(list_t* list, listVal_t index);
+listStatus listDelete(list_t* list, int index);
 
 listStatus listOptimize(list_t* list);
 listStatus listLinearize(list_t* list);

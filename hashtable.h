@@ -5,7 +5,7 @@
 
 #include <stddef.h>
 
-typedef int (*hashFunction_t) (char* str);
+typedef unsigned long (*hashFunction_t) (char* str);
 
 struct hashTableCell_t{
     list_t value;
