@@ -1,8 +1,12 @@
 #include "file.h"
 
+#define DEBUG
+#include "debug.h"
+
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #define $ fprintf(stderr, "MEOW in %s:%d\n", __FILE__, __LINE__);
 
@@ -120,18 +124,25 @@ static myString* divideBufferToStringsStructure(char* buffer, size_t nStrings){
 words_t divideBufferToWords(char* buffer, size_t bufferSize){
     assert(buffer);
     
+    char* curPos = buffer;
     size_t nWords = countWords(buffer, bufferSize);
+
+    LPRINTF("amountWords = %llu", nWords);
 
     myString* wordPtrs = (myString*) calloc(nWords + 1, sizeof(myString));
     assert(wordPtrs);
 
     wordPtrs[0].ptr = buffer;
     
-    for(size_t i = 1; i < nWords - 1; i++){
-        buffer = strchr(buffer, ' ');
-        wordPtrs[i].ptr = buffer + 1;
-        wordPtrs[i - 1].len = (size_t) buffer - (size_t) wordPtrs[i - 1].ptr;
+    for(size_t i = 0; i < nWords; i++){
+        curPos = strchr(curPos, ' ');
+        curPos++;
+
+        wordPtrs[i + 1].ptr = curPos;
+        wordPtrs[i].len = (size_t) (curPos - 1) - (size_t) wordPtrs[i].ptr;
     }
+
+    wordPtrs[nWords - 1].len = (size_t) bufferSize - (size_t) wordPtrs[nWords - 1].ptr;
 
     words_t words =  {
         wordPtrs,
@@ -144,12 +155,13 @@ words_t divideBufferToWords(char* buffer, size_t bufferSize){
 size_t countWords(char* buffer, size_t bufferSize){
     assert(buffer);
 
+    char* curPos = buffer;
     size_t amountWords = 1;
 
-    while(buffer = strchr(buffer, ' ')){
+    while(curPos = strchr(curPos, ' ')){
+        if(curPos - buffer < bufferSize) curPos++;
         amountWords++;
     }
-
 
     return amountWords;
 }

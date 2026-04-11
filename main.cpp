@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
 
@@ -20,29 +21,42 @@ int main(int argc, char* argv[]){
     }
 
     fileDescription wordsFileDesc = {
-        "rb",
-        wordsFileName
+        wordsFileName,
+        "rb"
     };
     FILE*  wordsFilePtr     = myOpenFile(&wordsFileDesc);
+    assert(wordsFilePtr);
+
     size_t wordsFileSize    = getFileSize(wordsFileName);
-    
+
     char* wordsBuffer = getTextToBuffer(wordsFilePtr, wordsFileSize);
     
+    lprintf("buffer = %s, bufferSize = %llu", wordsBuffer, wordsFileSize);
 
+    words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
 
-    hashTable_t hashTable;
-    hashTableCtor(&hashTable);
+    for(size_t curWord = 0; curWord < words.count; curWord++){
+        lprintf("wordLen = %llu\n", words.ptrs[curWord].len);
+        lprintf("word: ");
+        for(size_t curSymInd = 0; curSymInd < words.ptrs[curWord].len; curSymInd++){
+            lprintf("%c", (words.ptrs[curWord].ptr)[curSymInd]);
+        }
+        lprintf("\n");
+    }
 
-    char testStr[10] = "hello\n";
+    // hashTable_t hashTable;
+    // hashTableCtor(&hashTable);
 
-    hashTableInsert(&hashTable, testStr);
+    // char testStr[10] = "hello\n";
 
-    int cellNum = 0;
-    hashTableFind(&hashTable, testStr, &cellNum);
+    // hashTableInsert(&hashTable, testStr);
 
-    lprintf("foundCellNum = %d\n", cellNum);
+    // int cellNum = 0;
+    // hashTableFind(&hashTable, testStr, &cellNum);
 
-    hashTableDtor(&hashTable);
+    // lprintf("foundCellNum = %d\n", cellNum);
+
+    // hashTableDtor(&hashTable);
 
     return 0;
 }
