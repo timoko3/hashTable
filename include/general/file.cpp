@@ -1,6 +1,5 @@
 #include "file.h"
 
-#define DEBUG
 #include "debug.h"
 
 #include <sys/stat.h>

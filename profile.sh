@@ -5,7 +5,8 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--ggdb3 -std=c++17 -O2
+-g -O2 -fno-omit-frame-pointer
+-fno-optimize-sibling-calls
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
@@ -21,23 +22,12 @@ CXXFLAGS=(
 -Wunused -Wuseless-cast -Wvariadic-macros
 -Wno-literal-suffix -Wno-missing-field-initializers
 -Wno-narrowing -Wno-old-style-cast -Wno-varargs
--Werror=vla
-)
-
-SANITIZERS=(
--fsanitize=address,alignment,bool,bounds,enum
--fsanitize=float-cast-overflow,float-divide-by-zero
--fsanitize=integer-divide-by-zero,leak
--fsanitize=nonnull-attribute,null,object-size
--fsanitize=return,returns-nonnull-attribute
--fsanitize=shift,signed-integer-overflow,undefined
--fsanitize=unreachable,vla-bound,vptr
+-Werror=vla 
 )
 
 LDFLAGS=(
 -fcheck-new -fsized-deallocation -fstack-protector
--fstrict-overflow -flto-odr-type-merging
--fno-omit-frame-pointer -pie -fPIE
+-fstrict-overflow
 )
 
 SRC=(
@@ -65,7 +55,7 @@ OUT="hashTable.out"
 
 echo "Compiling..."
 
-$CXX "${CXXFLAGS[@]}" "${SANITIZERS[@]}" "${SRC[@]}" \
+$CXX "${CXXFLAGS[@]}" "${SRC[@]}" \
 -o "$OUT" "${LDFLAGS[@]}"
 
 echo "Done: $OUT"

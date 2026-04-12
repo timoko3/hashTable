@@ -12,6 +12,7 @@
 #include <malloc.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
+const size_t N_SEARCH             = 10000; 
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
@@ -35,10 +36,11 @@ int main(int argc, char* argv[]){
 
     char* wordsBuffer = getTextToBuffer(wordsFilePtr, wordsFileSize);
     
-    lprintf("buffer = %s, bufferSize = %llu", wordsBuffer, wordsFileSize);
+    LPRINTF("buffer = %s, bufferSize = %llu", wordsBuffer, wordsFileSize);
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
-
+    
+    
     // dumpWords(&words);
 
     hashTable_t hashTable;
@@ -54,25 +56,30 @@ int main(int argc, char* argv[]){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    int* cellNumber       = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
-    assert(cellNumber);
-    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
-    assert(cellAmountLoaded);
+    // int* cellNumber       = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // assert(cellNumber);
+    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // assert(cellAmountLoaded);
 
-    for(size_t i = 0; i < HASH_TABLE_SIZE((&hashTable)); i++){
-        cellNumber[i] = i;
+    // for(size_t i = 0; i < HASH_TABLE_SIZE((&hashTable)); i++){
+    //     cellNumber[i] = i;
 
-        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
-        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    //     hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
+    //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    // }
+
+    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/murMurHashLoad.png");
+
+    int cellNum = 0;
+    for(size_t i = 0; i < N_SEARCH; i++){
+        hashTableFind(&hashTable, words.ptrs[i].ptr, &cellNum);
     }
 
-    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/murMurHashLoad.png");
-
-
-    // hashTableFind(&hashTable, testStr, &cellNum);
-
-
     hashTableDtor(&hashTable);
+
+    // free Words strcut
+    free(wordsBuffer);
+    free(words.ptrs);
 
     return 0;
 }

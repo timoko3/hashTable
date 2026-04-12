@@ -1,7 +1,6 @@
 #include "hashTable.h"
 #include "DSL.h"
 
-// #define DEBUG
 #include "general/debug.h"
 
 #include <malloc.h>
@@ -26,7 +25,7 @@ unsigned long murMurHash(char* str);
 bool hashTableCtor(hashTable_t* hashTable){
     HASH_TABLE_SIZE(hashTable)            = HASH_TABLE_SIZE_C; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
-    HASH_TABLE_FUNCTION(hashTable)        = murMurHash;
+    HASH_TABLE_FUNCTION(hashTable)        = gnuHash;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_SIZE_C, sizeof(hashTableCell_t));
 
