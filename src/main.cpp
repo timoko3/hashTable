@@ -52,7 +52,7 @@ int main(int argc, char* argv[]){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    buildHashTableDiagram(&hashTable, "exDiag.png");
+    buildHashTableDiagram(&hashTable, "images/diagrams/gnuHashLoad.png");
 
 
     // hashTableFind(&hashTable, testStr, &cellNum);

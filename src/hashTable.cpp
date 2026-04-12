@@ -44,6 +44,8 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     
     listInsertToTail(&HASH_TABLE_CELL_VALUE(curCell), str);
 
+    HASH_TABLE_AMOUNT_ELEMENTS(hashTable)++;
+
     LPRINTF("addrListInsFunc = %p", &curCell);
 
     LPRINTF("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
