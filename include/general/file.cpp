@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 
 #define $ fprintf(stderr, "MEOW in %s:%d\n", __FILE__, __LINE__);
 
@@ -124,7 +125,7 @@ static myString* divideBufferToStringsStructure(char* buffer, size_t nStrings){
 words_t divideBufferToWords(char* buffer, size_t bufferSize){
     assert(buffer);
     
-    char* curPos = buffer;
+    char* curPos  = buffer;
     size_t nWords = countWords(buffer, bufferSize);
 
     LPRINTF("amountWords = %llu", nWords);
@@ -135,14 +136,26 @@ words_t divideBufferToWords(char* buffer, size_t bufferSize){
     wordPtrs[0].ptr = buffer;
     
     for(size_t i = 0; i < nWords; i++){
-        curPos = strchr(curPos, ' ');
+
+        while(!(isspace(*curPos) && (curPos + 1) && !isspace(*(curPos + 1)))){
+            curPos++;
+            if(curPos - buffer >= bufferSize){
+                curPos--;
+                break;
+            }
+        }
+        *curPos = '\0';
         curPos++;
 
         wordPtrs[i + 1].ptr = curPos;
         wordPtrs[i].len = (size_t) (curPos - 1) - (size_t) wordPtrs[i].ptr;
     }
 
-    wordPtrs[nWords - 1].len = (size_t) bufferSize - (size_t) wordPtrs[nWords - 1].ptr;
+    LPRINTF("buffer[bufferSize - 1] = %llu, wordPtrs[nWords - 1].ptr = %llu", (size_t) buffer[bufferSize - 1], (size_t) wordPtrs[nWords - 1].ptr);
+
+    // wordPtrs[nWords - 1].len = (size_t) &buffer[bufferSize] - (size_t) wordPtrs[nWords - 1].ptr;
+
+    LPRINTF("last word len = %llu", wordPtrs[nWords - 1].len);
 
     words_t words =  {
         wordPtrs,
@@ -158,9 +171,9 @@ size_t countWords(char* buffer, size_t bufferSize){
     char* curPos = buffer;
     size_t amountWords = 1;
 
-    while(curPos = strchr(curPos, ' ')){
-        if(curPos - buffer < bufferSize) curPos++;
-        amountWords++;
+    while(curPos - buffer < bufferSize){
+        curPos++;
+        if(isspace(*curPos) && (curPos + 1) && !isspace(*(curPos + 1))) amountWords++;
     }
 
     return amountWords;
@@ -198,6 +211,18 @@ bool getIntNumsToBuffer(fileDescription file, size_t fileSize, int** buffer){
     return true;
 }
 
+void dumpWords(words_t* words){
+    assert(words);
+
+    for(size_t curWord = 0; curWord < words->count; curWord++){
+        lprintf("wordLen = %llu\n", words->ptrs[curWord].len);
+        lprintf("word: ");
+        for(size_t curSymInd = 0; curSymInd < words->ptrs[curWord].len; curSymInd++){
+            lprintf("%c", (words->ptrs[curWord].ptr)[curSymInd]);
+        }
+        lprintf("\n");
+    }
+}
 
 #ifdef DEBUG
 static void printBuffer(char* buffer){

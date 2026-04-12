@@ -3,6 +3,8 @@
 #include "general/debug.h"
 #include "general/file.h"
 
+#include "measures/handler.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
@@ -35,28 +37,26 @@ int main(int argc, char* argv[]){
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
 
-    for(size_t curWord = 0; curWord < words.count; curWord++){
-        lprintf("wordLen = %llu\n", words.ptrs[curWord].len);
-        lprintf("word: ");
-        for(size_t curSymInd = 0; curSymInd < words.ptrs[curWord].len; curSymInd++){
-            lprintf("%c", (words.ptrs[curWord].ptr)[curSymInd]);
-        }
-        lprintf("\n");
-    }
+    // dumpWords(&words);
 
-    // hashTable_t hashTable;
-    // hashTableCtor(&hashTable);
+    hashTable_t hashTable;
+    hashTableCtor(&hashTable);
 
     // char testStr[10] = "hello\n";
 
-    // hashTableInsert(&hashTable, testStr);
+    for(size_t curWord = 0; curWord < words.count; curWord++){
+        hashTableInsert(&hashTable, words.ptrs[curWord].ptr);
+    }
 
-    // int cellNum = 0;
+    // for(size_t i = 0; i < hashTable.size; i++){
+    //     listGraphDump(&hashTable.cells[i].value);
+    // }
+
+
     // hashTableFind(&hashTable, testStr, &cellNum);
 
-    // lprintf("foundCellNum = %d\n", cellNum);
 
-    // hashTableDtor(&hashTable);
+    hashTableDtor(&hashTable);
 
     return 0;
 }

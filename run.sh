@@ -6,7 +6,7 @@ CXX="g++"
 
 CXXFLAGS=(
 -ggdb3 -std=c++17 -O0
--Iinclude
+-Iinclude -Imeasures
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
 -Wconditionally-supported -Wconversion -Wctor-dtor-privacy
@@ -41,8 +41,8 @@ LDFLAGS=(
 )
 
 SRC=(
-main.cpp
-hashTable.cpp
+
+
 
 include/cashFriendlyList/list.cpp
 include/cashFriendlyList/general_list.cpp
@@ -54,6 +54,11 @@ include/general/file.cpp
 include/general/hash.cpp
 include/general/poison.cpp
 include/general/strFunc.cpp
+
+src/main.cpp
+src/hashTable.cpp
+
+src/measures/handler.cpp
 )
 
 OUT="hashTable.out"

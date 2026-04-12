@@ -45,4 +45,6 @@ void writeOpcode(buffer_t* buffer, const char* fileName);
 char* getTextToBuffer(FILE* inputFile, size_t fileSize);
 bool getIntNumsToBuffer(fileDescription file, size_t fileSize, int** buffer);
 
+void dumpWords(words_t* words);
+
 #endif /*FILE_PARSE_H*/
