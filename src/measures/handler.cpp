@@ -50,17 +50,18 @@ void buildHashTableDiagram(hashTable_t* hashTable, const char* fileName){
 
     fprintf(pyDiagramFile, "plt.title(\"Загрузка хэш-таблицы\")\n");
 
+    float loadFactor = (float) HASH_TABLE_AMOUNT_ELEMENTS(hashTable) / (float) HASH_TABLE_SIZE(hashTable);
 
     fprintf(pyDiagramFile, "stats = (\n");
-    fprintf(pyDiagramFile, "f\"Всего ячеек: {len(values)}\\n\"\n");
-    fprintf(pyDiagramFile, "f\"Лоад-фактор: %.2f\\n\"\n", 
-        (float) HASH_TABLE_AMOUNT_ELEMENTS(hashTable) / (float) HASH_TABLE_SIZE(hashTable));
+    fprintf(pyDiagramFile, "f\"Лоад-фактор: %.2f\\n\"\n", loadFactor);
     fprintf(pyDiagramFile, "f\"Пустые: {values.count(0)}\"\n");
     fprintf(pyDiagramFile, ")\n");
 
 
     fprintf(pyDiagramFile, "plt.text(0.8, 0.8, stats, transform=plt.gca().transAxes, bbox=dict(boxstyle=\"round\"))\n");
 
+    // создаем линию лоад-фактора
+    fprintf(pyDiagramFile, "plt.axhline(x = %d, linestyle = '--')\n", loadFactor);
     
     fprintf(pyDiagramFile, "plt.savefig('%s')\n", fileName);
 
@@ -70,3 +71,5 @@ void buildHashTableDiagram(hashTable_t* hashTable, const char* fileName){
     sprintf(buildDiagCommand, "python3 %s", PYTHON_FILE_NAME);
     system(buildDiagCommand);
 }
+
+double countStd()
