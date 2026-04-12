@@ -5,12 +5,30 @@ plt.figure(figsize=(12, 6))
 values = [6, 7, 6, 9, 10, 7, 9, 4, 2, 12, 4, 11, 5, 5, 2, 3, 2, 4, 2, 8, 6, 6, 10, 3, 5, 22, 11, 7, 2, 7, 5, 10, 1, 17, 9, 7, 3, 3, 3, 7, 4, 5, 22, 6, 8, 4, 4, 2, 19, 5, 4, 1, 7, 4, 60, 2, 7, 10, 2, 10, 21, 2, 3, 5, 18, 1, 23, 1, 5, 9, 29, 4, 1, 1, 27, 0, 9, 10, 3, 3, 7, 9, 28, 6, 23, 3, 15, 2, 8, 16, 8, 3, 6, 7, 1, 4, 8, 4, 0, 5]
 plt.xticks(range(0, len(cellNum), 10))
 plt.grid(axis='y', linestyle='--', alpha=0.5)
-plt.bar(cellNum, values)
+plt.xlabel('Номер ячейки')
+plt.ylabel('Количество элементов')
 plt.title("Загрузка хэш-таблицы")
+mean = 7.86
+std = 8.23
+colors = []
+for v in values:
+	if v > mean + std:
+		colors.append('red')
+	elif v > mean:
+		colors.append('orange')
+	else:
+		colors.append('green')
+plt.bar(cellNum, values, color = colors, alpha=0.8)
 stats = (
-f"Всего ячеек: {len(values)}\n"
-f"Лоад-фактор: 7.86\n"
-f"Пустые: {values.count(0)}"
+f"Среднее: 7.86\n"
+f"Стандартное отклонение:  8.23\n"
+f"Коэф. вариации:   1.05\n"
+f"zeros: {values.count(0)}"
 )
-plt.text(0.8, 0.8, stats, transform=plt.gca().transAxes, bbox=dict(boxstyle="round"))
+plt.plot([], [], ' ', label=stats)
+plt.legend(loc='best')
+plt.axhline(y = 7.86, linewidth = 2.5, linestyle = '--', label=f'Среднее: 7.86')
+plt.axhline(y = 16.09, linewidth = 2, linestyle = ':', label=f'+1σ')
+plt.legend()
+plt.tight_layout()
 plt.savefig('images/diagrams/gnuHashLoad.png')

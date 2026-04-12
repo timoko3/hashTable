@@ -1,4 +1,5 @@
 #include "hashtable.h"
+#include "DSL.h"
 
 #include "general/debug.h"
 #include "general/file.h"
@@ -8,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <malloc.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
 
@@ -52,7 +54,19 @@ int main(int argc, char* argv[]){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    buildHashTableDiagram(&hashTable, "images/diagrams/gnuHashLoad.png");
+    int* cellNumber       = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    assert(cellNumber);
+    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    assert(cellAmountLoaded);
+
+    for(size_t i = 0; i < HASH_TABLE_SIZE((&hashTable)); i++){
+        cellNumber[i] = i;
+
+        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
+        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    }
+
+    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/gnuHashLoad.png");
 
 
     // hashTableFind(&hashTable, testStr, &cellNum);
