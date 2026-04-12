@@ -45,7 +45,7 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
     }
     fprintf(pyDiagramFile, "]\n");
 
-    fprintf(pyDiagramFile, "plt.xticks(range(0, len(cellNum), 10))\n");
+    fprintf(pyDiagramFile, "plt.xticks(range(0, len(cellNum), 250))\n");
 
     fprintf(pyDiagramFile, "plt.grid(axis='y', linestyle='--', alpha=0.5)\n");
 
@@ -77,7 +77,7 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
     fprintf(pyDiagramFile, "f\"Среднее: %.2f\\n\"\n", mean);
     fprintf(pyDiagramFile, "f\"Стандартное отклонение:  %.2f\\n\"\n", std );
     fprintf(pyDiagramFile, "f\"Коэф. вариации:   %.2f\\n\"\n", cv  );
-    fprintf(pyDiagramFile, "f\"zeros: {values.count(0)}\"\n");
+    fprintf(pyDiagramFile, "f\"пустые ячейки: {values.count(0)}\"\n");
     fprintf(pyDiagramFile, ")\n");
 
     fprintf(pyDiagramFile, "plt.plot([], [], ' ', label=stats)\n");
@@ -93,6 +93,7 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
         fprintf(pyDiagramFile, "plt.axhline(y = %.2f, linestyle = ':', label=f'-1σ')\n", mean - std);
     }
 
+    // fprintf(pyDiagramFile, "plt.yscale('log')\n");
     fprintf(pyDiagramFile, "plt.legend()\n");
 
     fprintf(pyDiagramFile, "plt.tight_layout()\n");

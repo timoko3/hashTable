@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
         cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
     }
 
-    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/gnuHashLoad.png");
+    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/murMurHashLoad.png");
 
 
     // hashTableFind(&hashTable, testStr, &cellNum);
