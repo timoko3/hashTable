@@ -6,7 +6,7 @@ CXX="g++"
 
 CXXFLAGS=(
 -ggdb3 -std=c++17 -O0
--Iinclude -Imeasures
+-Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
 -Wconditionally-supported -Wconversion -Wctor-dtor-privacy

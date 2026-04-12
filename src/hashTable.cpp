@@ -1,7 +1,7 @@
 #include "hashTable.h"
 #include "DSL.h"
 
-#define DEBUG
+// #define DEBUG
 #include "general/debug.h"
 
 #include <malloc.h>
@@ -46,7 +46,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
 
     LPRINTF("addrListInsFunc = %p", &curCell);
 
-    lprintf("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
+    LPRINTF("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
 
     return true;
 }
@@ -66,7 +66,7 @@ bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
     LPRINTF("addrListFindFunc = %p", curCell);
 
     int curElem = *head(&HASH_TABLE_CELL_VALUE(curCell));
-    lprintf("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
+    LPRINTF("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
     for(size_t i = 0; i < HASH_TABLE_CELL_VALUE(curCell).size; i++){
         if(!strcmp(str, *data(&HASH_TABLE_CELL_VALUE(curCell), curElem))){
             *findCellNum = cellNumber;

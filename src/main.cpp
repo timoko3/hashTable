@@ -52,6 +52,8 @@ int main(int argc, char* argv[]){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
+    buildHashTableDiagram(&hashTable, "exDiag.png");
+
 
     // hashTableFind(&hashTable, testStr, &cellNum);
 

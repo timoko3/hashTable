@@ -150,11 +150,11 @@ static listStatus listInit(list_t* list, size_t startIndex){
         *data(list, allocInd) = (char*) calloc(listValueMaxLen, sizeof(char));
         assert(*data(list, allocInd));
         
-        lprintf("memAllocated = %llu\n", malloc_usable_size(*data(list, allocInd)));
+        LPRINTF("memAllocated = %llu\n", malloc_usable_size(*data(list, allocInd)));
     }
 
     for(size_t fillInd = startIndex; fillInd < list->capacity; fillInd++){
-        lprintf("fillInd = %d\n", (int) fillInd);
+        LPRINTF("fillInd = %d\n", (int) fillInd);
 
         strcpy(*data(list, (int) fillInd), LIST_POISON);
         *next(list, (int) fillInd) = (int) fillInd + 1;
