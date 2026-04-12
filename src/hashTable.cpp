@@ -42,6 +42,11 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
 
     hashTableCell_t* curCell = &(HASH_TABLE_CELLS(hashTable)[cellNumber]);
     
+    // check exists word
+    int findCellNum = 0;
+    hashTableFind(hashTable, str, &findCellNum);
+    if(!(findCellNum == SEARCH_NOT_FOUND_VALUE)) return false;
+
     listInsertToTail(&HASH_TABLE_CELL_VALUE(curCell), str);
 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable)++;
