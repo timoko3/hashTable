@@ -10,6 +10,8 @@
 
 #define verify(list) if(verifyList(list, __FUNCTION__, __FILE__, __LINE__) != PROCESS_OK) return list->status.type
 
+const int SEARCH_NOT_FOUND_VALUE = -1;
+
 static listStatus listInit(list_t* list, size_t startIndex = 1);
 static listStatus reallocateList(list_t* list); 
 static void placeNodeRight(list_t* list, int logicalInd, int physicalInd);
@@ -137,6 +139,26 @@ listStatus listDelete(list_t* list, int deleteIndex){
     verify(list);
     log(list, "after %s %d", "delete", deleteIndex);
     #endif /* DEBUG */
+
+    return PROCESS_OK;
+}
+
+listStatus listFind(list_t* list, listVal_t findValue, int* findIndex){
+    assert(list);
+    assert(findIndex);
+
+    *findIndex = SEARCH_NOT_FOUND_VALUE;
+
+    int curElem = *head(list);
+    LPRINTF("size = %llu\n", list->size);
+    for(size_t i = 0; i < list->size; i++){
+        if(!strcmp(findValue, *data(list, curElem))){
+            *findIndex = curElem;
+            break; 
+        }
+        
+        curElem = *next(list, curElem);
+    }
 
     return PROCESS_OK;
 }

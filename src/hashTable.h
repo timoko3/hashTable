@@ -15,7 +15,7 @@ struct hashTableCell_t{
 };
 
 struct hashTable_t{
-    size_t           size; // nCells / capacity
+    size_t           capacity; // nCells / capacity
     size_t           amountElements; // unique and duplicate
     hashFunction_t   hashFunction;
     hashTableCell_t* cells;

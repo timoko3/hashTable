@@ -74,23 +74,23 @@ void testHashTable(words_t* words){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    // int* cellNumber       = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
     // assert(cellNumber);
-    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
     // assert(cellAmountLoaded);
 
-    // for(size_t i = 0; i < HASH_TABLE_SIZE((&hashTable)); i++){
+    // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
     //     cellNumber[i] = i;
 
     //     hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
     //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
     // }
 
-    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/murMurHashLoad.png");
+    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/murMurHashLoad.png");
 
     int cellNum = 0;
     for(size_t i = 0; i < N_SEARCH; i++){
-        size_t index = rand() % HASH_TABLE_SIZE((&hashTable));
+        size_t index = rand() % HASH_TABLE_CAPACITY((&hashTable));
         hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
     }
 

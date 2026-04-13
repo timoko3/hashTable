@@ -8,8 +8,8 @@
 #include <string.h>
 #include <stdint.h>
 
-const size_t HASH_TABLE_SIZE_C            = 4000; 
-// const size_t HASH_TABLE_AMOUNT_ELEMENTS_C = 50;
+const size_t HASH_TABLE_CAPACITY_C        = 4000; 
+const size_t LIST_START_CAPACITY          = 3;
 
 const int SEARCH_NOT_FOUND_VALUE          = -1;
 
@@ -23,16 +23,15 @@ unsigned long rolHash(char* str);
 unsigned long murMurHash(char* str);
 
 bool hashTableCtor(hashTable_t* hashTable){
-    HASH_TABLE_SIZE(hashTable)            = HASH_TABLE_SIZE_C; 
+    HASH_TABLE_CAPACITY(hashTable)        = HASH_TABLE_CAPACITY_C; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
     HASH_TABLE_FUNCTION(hashTable)        = gnuHash;
 
-    HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_SIZE_C, sizeof(hashTableCell_t));
-    //
+    HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_CAPACITY_C, sizeof(hashTableCell_t));
     assert(HASH_TABLE_CELLS(hashTable));
 
-    for(size_t i = 0; i < HASH_TABLE_SIZE_C; i++){
-        HASH_TABLE_CELLS(hashTable)[i].value.capacity = 3; // 
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY_C; i++){
+        HASH_TABLE_CELLS(hashTable)[i].value.capacity = LIST_START_CAPACITY; 
         listCtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
 
@@ -50,10 +49,9 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     hashTableCell_t* curCell = &(HASH_TABLE_CELLS(hashTable)[cellNumber]);
     
     // check exists word
-    int findCellNum = 0;
-    hashTableFind(hashTable, str, &findCellNum);
-    // listFind(&HASH_TABLE_CELL_VALUE(curCell), str);
-    if(!(findCellNum == SEARCH_NOT_FOUND_VALUE)) return false;
+    int listSearchElemIndex = 0;
+    listFind(&HASH_TABLE_CELL_VALUE(curCell), str, &listSearchElemIndex);
+    if(!(listSearchElemIndex == SEARCH_NOT_FOUND_VALUE)) return false;
 
     listInsertToTail(&HASH_TABLE_CELL_VALUE(curCell), str);
 
@@ -69,6 +67,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
 bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
     assert(hashTable);
     assert(str);
+    assert(findCellNum);
 
     *findCellNum = SEARCH_NOT_FOUND_VALUE;
 
@@ -80,22 +79,14 @@ bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
 
     LPRINTF("addrListFindFunc = %p", curCell);
 
-    int curElem = *head(&HASH_TABLE_CELL_VALUE(curCell));
-    LPRINTF("size = %llu\n", HASH_TABLE_CELL_VALUE(curCell).size);
-    for(size_t i = 0; i < HASH_TABLE_CELL_VALUE(curCell).size; i++){
-        if(!strcmp(str, *data(&HASH_TABLE_CELL_VALUE(curCell), curElem))){
-            *findCellNum = cellNumber;
-            break; 
-        }
-        
-        curElem = *next(&HASH_TABLE_CELL_VALUE(curCell), curElem);
-    }
+    int listSearchElemIndex = 0;
+    if(listFind(&HASH_TABLE_CELL_VALUE(curCell), str, &listSearchElemIndex)) *findCellNum = cellNumber;
 
     return true;
 }
 
 bool hashTableDtor(hashTable_t* hashTable){
-    for(size_t i = 0; i < HASH_TABLE_SIZE_C; i++){
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY_C; i++){
         listDtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
 
@@ -123,7 +114,7 @@ unsigned long lenHash(char* str){
 unsigned long firstSymHash(char* str){
     assert(str);
 
-    return *str % HASH_TABLE_SIZE_C;
+    return *str % HASH_TABLE_CAPACITY_C;
 }
 
 unsigned long sumHash(char* str){
@@ -134,7 +125,7 @@ unsigned long sumHash(char* str){
         sum += (unsigned long) str[i];
     }
 
-    return sum % HASH_TABLE_SIZE_C;
+    return sum % HASH_TABLE_CAPACITY_C;
 }
 
 unsigned long gnuHash(char* str){
@@ -146,7 +137,7 @@ unsigned long gnuHash(char* str){
         hash = (hash << 5) + hash + c; // h * 33 + c
     }
 
-    return hash % HASH_TABLE_SIZE_C;
+    return hash % HASH_TABLE_CAPACITY_C;
 }
 
 unsigned long crcHash(char* str){
@@ -167,7 +158,7 @@ unsigned long crcHash(char* str){
         }
     }
 
-    return (unsigned long) (~crc % HASH_TABLE_SIZE_C);
+    return (unsigned long) (~crc % HASH_TABLE_CAPACITY_C);
 }
 
 unsigned long rolHash(char* str){
@@ -180,7 +171,7 @@ unsigned long rolHash(char* str){
         hash ^= str[i];
     }
     
-    return (unsigned long) (hash % HASH_TABLE_SIZE_C);
+    return (unsigned long) (hash % HASH_TABLE_CAPACITY_C);
 }
 
 unsigned long murMurHash(char* str){
@@ -211,5 +202,5 @@ unsigned long murMurHash(char* str){
     hash *= 0xc2b2ae35;
     hash ^= hash >> 16;
 
-    return (unsigned long) hash % HASH_TABLE_SIZE_C; 
+    return (unsigned long) hash % HASH_TABLE_CAPACITY_C; 
 }
