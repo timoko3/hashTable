@@ -44,6 +44,8 @@ int main(int argc, char* argv[]){
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
     
+
+
     for(size_t i = 0; i < N_TESTS; i++){
         testHashTable(&words);
     }

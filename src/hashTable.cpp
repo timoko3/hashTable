@@ -19,7 +19,7 @@ unsigned long firstSymHash(char* str);
 unsigned long sumHash(char* str);
 unsigned long gnuHash(char* str);
 unsigned long crcHash(char* str);
-unsigned long rollHash(char* str);
+unsigned long rolHash(char* str);
 unsigned long murMurHash(char* str);
 
 bool hashTableCtor(hashTable_t* hashTable){
@@ -28,13 +28,13 @@ bool hashTableCtor(hashTable_t* hashTable){
     HASH_TABLE_FUNCTION(hashTable)        = gnuHash;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_SIZE_C, sizeof(hashTableCell_t));
+    //
+    assert(HASH_TABLE_CELLS(hashTable));
 
     for(size_t i = 0; i < HASH_TABLE_SIZE_C; i++){
-        HASH_TABLE_CELLS(hashTable)[i].value.capacity = 3;
+        HASH_TABLE_CELLS(hashTable)[i].value.capacity = 3; // 
         listCtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
-
-    assert(HASH_TABLE_CELLS(hashTable));
 
     return true;
 }
@@ -52,6 +52,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     // check exists word
     int findCellNum = 0;
     hashTableFind(hashTable, str, &findCellNum);
+    // listFind(&HASH_TABLE_CELL_VALUE(curCell), str);
     if(!(findCellNum == SEARCH_NOT_FOUND_VALUE)) return false;
 
     listInsertToTail(&HASH_TABLE_CELL_VALUE(curCell), str);
@@ -98,11 +99,15 @@ bool hashTableDtor(hashTable_t* hashTable){
         listDtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
 
-    free(HASH_TABLE_CELLS(hashTable));         
+    free(HASH_TABLE_CELLS(hashTable));     
+    
+    // = nullptr
 
     return true;
 }
 
+// eof
+//
 unsigned long constHash(char* str){
     assert(str);
     
@@ -165,13 +170,13 @@ unsigned long crcHash(char* str){
     return (unsigned long) (~crc % HASH_TABLE_SIZE_C);
 }
 
-unsigned long rollHash(char* str){
+unsigned long rolHash(char* str){
     assert(str);
 
     uint32_t hash = 0;
 
-    for (size_t i = 0; i < strlen(str); i++){
-        hash = (hash << 5) | (hash >> 27);    
+    for (size_t i = 0; i < strlen(str); i++){ // why strlen
+        hash = (hash << 5) | (hash >> 27);    // 5 // 27 = 8*4-1
         hash ^= str[i];
     }
     

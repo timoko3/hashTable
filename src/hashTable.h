@@ -5,16 +5,18 @@
 
 #include <stddef.h>
 
+typedef unsigned long hash_t;
+typedef const char* hashTableData_t; // int double
+
 typedef unsigned long (*hashFunction_t) (char* str);
 
 struct hashTableCell_t{
     list_t value;
-    int   hash;
 };
 
 struct hashTable_t{
-    size_t           size;
-    size_t           amountElements;
+    size_t           size; // nCells / capacity
+    size_t           amountElements; // unique and duplicate
     hashFunction_t   hashFunction;
     hashTableCell_t* cells;
 };
