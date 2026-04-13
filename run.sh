@@ -5,7 +5,7 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--ggdb3 -std=c++17 -O3
+-ggdb3 -std=c++17 -O0
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
@@ -58,7 +58,7 @@ src/hashTable.cpp
 src/measures/handler.cpp
 )
 
-OUT="hashTableO3.out"
+OUT="hashTableO0.out"
 
 echo "Compiling..."
 
