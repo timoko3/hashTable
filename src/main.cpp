@@ -13,17 +13,23 @@
 #include <stdlib.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
-const size_t N_SEARCH             = 10e7; 
+// const size_t N_SEARCH             = 10e7; 
 const size_t N_TESTS              = 1;
 
-void testHashTable(words_t* words);
+void testHashTable(words_t* words, size_t nSearches);
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
-    if(argc == 3){
+    size_t nSearches = 0;
+    if(argc >= 3){
         if(!strcmp("-f", argv[1])){
             strcpy(wordsFileName, argv[2]);
         }
+
+        if(!strcmp("-n", argv[3])){
+            nSearches = atoi(argv[4]);
+        }
+
         else{
             printf("incorrect option\n");
         }
@@ -45,7 +51,7 @@ int main(int argc, char* argv[]){
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
 
     for(size_t i = 0; i < N_TESTS; i++){
-        testHashTable(&words);
+        testHashTable(&words, nSearches);
     }
 
     // dumpWords(&words);
@@ -57,7 +63,8 @@ int main(int argc, char* argv[]){
     return 0;
 }
 
-void testHashTable(words_t* words){
+void testHashTable(words_t* words, size_t nSearches){
+    assert(words);
 
     hashTable_t hashTable;
     hashTableCtor(&hashTable);
@@ -90,7 +97,7 @@ void testHashTable(words_t* words){
     // free(cellAmountLoaded);
 
     int cellNum = 0;
-    for(size_t i = 0; i < N_SEARCH; i++){
+    for(size_t i = 0; i < nSearches; i++){
         size_t index = rand() % HASH_TABLE_CAPACITY((&hashTable));
         hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
     }
