@@ -2,13 +2,11 @@
 #define HASH_TABLE_H
 
 #include "cashFriendlyList/list.h"
+#include "general/hash.h"
 
 #include <stddef.h>
 
-typedef unsigned long hash_t;
-typedef const char* hashTableData_t; // int double
-
-typedef unsigned long (*hashFunction_t) (char* str);
+typedef hash_t (*hashFunction_t) (hashData_t str);
 
 struct hashTableCell_t{
     list_t value;
