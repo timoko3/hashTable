@@ -22,12 +22,12 @@ int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
     size_t nSearches = N_SEARCH;
     if(argc >= 3){
-        if(!strcmp("-f", argv[1])){
-            strcpy(wordsFileName, argv[2]);
-        }
-
         if(argc == 5 && !strcmp("-n", argv[3])){
             nSearches = atoi(argv[4]);
+        }
+
+        if(!strcmp("-f", argv[1])){
+            strcpy(wordsFileName, argv[2]);
         }
 
         else{

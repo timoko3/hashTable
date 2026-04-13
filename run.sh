@@ -58,7 +58,7 @@ src/hashTable.cpp
 src/measures/handler.cpp
 )
 
-OUT="hashTableOptimalSearch.out"
+OUT="hashTable.out"
 
 echo "Compiling..."
 
