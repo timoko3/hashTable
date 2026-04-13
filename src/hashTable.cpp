@@ -2,6 +2,7 @@
 #include "DSL.h"
 
 #include "general/debug.h"
+#include "general/poison.h"
 
 #include <malloc.h>
 #include <assert.h>
@@ -91,8 +92,12 @@ bool hashTableDtor(hashTable_t* hashTable){
     }
 
     free(HASH_TABLE_CELLS(hashTable));     
+    HASH_TABLE_CELLS(hashTable) = NULL;
     
-    // = nullptr
+    poisonMemory(&HASH_TABLE_CAPACITY(hashTable),        sizeof(HASH_TABLE_CAPACITY(hashTable       )));
+    poisonMemory(&HASH_TABLE_AMOUNT_ELEMENTS(hashTable), sizeof(HASH_TABLE_AMOUNT_ELEMENTS(hashTable)));
+    poisonMemory(&HASH_TABLE_FUNCTION(hashTable),        sizeof(HASH_TABLE_FUNCTION(hashTable       )));
+
 
     return true;
 }

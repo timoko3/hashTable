@@ -14,7 +14,7 @@
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
 const size_t N_SEARCH             = 10e7; 
-const size_t N_TESTS              = 20;
+const size_t N_TESTS              = 1;
 
 void testHashTable(words_t* words);
 
@@ -70,9 +70,9 @@ void testHashTable(words_t* words){
         hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
 
-    // for(size_t i = 0; i < hashTable.size; i++){
-    //     listGraphDump(&hashTable.cells[i].value);
-    // }
+    // // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
+    // //     listGraphDump(&hashTable.cells[i].value);
+    // // }
 
     // int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
     // assert(cellNumber);
@@ -86,7 +86,10 @@ void testHashTable(words_t* words){
     //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
     // }
 
-    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/murMurHashLoad.png");
+    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/test.png");
+
+    // free(cellNumber);
+    // free(cellAmountLoaded);
 
     int cellNum = 0;
     for(size_t i = 0; i < N_SEARCH; i++){
