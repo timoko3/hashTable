@@ -49,7 +49,7 @@ if best_index is not None:
     plt.plot(x[best_index], 0, marker='o', color='red', markersize=5, clip_on=False, transform=plt.gca().get_xaxis_transform(), label = f"{x[best_index]}")
 
     
-    plt.axvline(x = x[best_index], color='r', linestyle='--', label = "Поиск начинает занимать почти все время")
+    plt.axvline(x = x[best_index], color='r', linestyle='--', label = "Поиск занимает значительную \nчасть времени исполнения")
     plt.axvspan(xmin=x[best_index], xmax=max(x), facecolor='green', alpha=0.2)
 else:   
     print("Не найдено")
@@ -89,7 +89,7 @@ plt.yscale("log")
 
 plt.xlabel("Количество поисков")
 plt.ylabel("Время исполнения (секунд)")
-plt.title("Время исполнения программы в завсимости от количества поисков")
+plt.title("Время исполнения программы в зависимости от количества поисков")
 
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 

@@ -13,20 +13,20 @@
 #include <stdlib.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
-// const size_t N_SEARCH             = 10e7; 
+const size_t N_SEARCH             = 10e7; 
 const size_t N_TESTS              = 1;
 
 void testHashTable(words_t* words, size_t nSearches);
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
-    size_t nSearches = 0;
+    size_t nSearches = N_SEARCH;
     if(argc >= 3){
         if(!strcmp("-f", argv[1])){
             strcpy(wordsFileName, argv[2]);
         }
 
-        if(!strcmp("-n", argv[3])){
+        if(argc == 5 && !strcmp("-n", argv[3])){
             nSearches = atoi(argv[4]);
         }
 
