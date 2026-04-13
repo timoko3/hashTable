@@ -10,9 +10,13 @@
 #include <string.h>
 #include <assert.h>
 #include <malloc.h>
+#include <stdlib.h>
 
 const size_t MAX_FILE_NAME_LENGTH = 64;
-const size_t N_SEARCH             = 10000; 
+const size_t N_SEARCH             = 10e7; 
+const size_t N_TESTS              = 20;
+
+void testHashTable(words_t* words);
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
@@ -40,16 +44,28 @@ int main(int argc, char* argv[]){
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
     
-    
+    for(size_t i = 0; i < N_TESTS; i++){
+        testHashTable(&words);
+    }
+
     // dumpWords(&words);
+
+    // free Words strcut
+    free(wordsBuffer);
+    free(words.ptrs);
+
+    return 0;
+}
+
+void testHashTable(words_t* words){
 
     hashTable_t hashTable;
     hashTableCtor(&hashTable);
 
     // char testStr[10] = "hello\n";
 
-    for(size_t curWord = 0; curWord < words.count; curWord++){
-        hashTableInsert(&hashTable, words.ptrs[curWord].ptr);
+    for(size_t curWord = 0; curWord < words->count; curWord++){
+        hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
 
     // for(size_t i = 0; i < hashTable.size; i++){
@@ -72,14 +88,9 @@ int main(int argc, char* argv[]){
 
     int cellNum = 0;
     for(size_t i = 0; i < N_SEARCH; i++){
-        hashTableFind(&hashTable, words.ptrs[i].ptr, &cellNum);
+        size_t index = rand() % HASH_TABLE_SIZE((&hashTable));
+        hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
     }
 
     hashTableDtor(&hashTable);
-
-    // free Words strcut
-    free(wordsBuffer);
-    free(words.ptrs);
-
-    return 0;
 }

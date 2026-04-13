@@ -5,8 +5,9 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--g -O2 -fno-omit-frame-pointer
+-g -O0 -fno-omit-frame-pointer
 -fno-optimize-sibling-calls
+-fdebug-prefix-map=$(pwd)=.
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
