@@ -5,7 +5,7 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--ggdb3 -std=c++17 -O2
+-ggdb3 -std=c++17 -O3
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
@@ -41,9 +41,6 @@ LDFLAGS=(
 )
 
 SRC=(
-
-
-
 include/cashFriendlyList/list.cpp
 include/cashFriendlyList/general_list.cpp
 include/cashFriendlyList/protection_list.cpp
@@ -61,7 +58,7 @@ src/hashTable.cpp
 src/measures/handler.cpp
 )
 
-OUT="hashTable.out"
+OUT="hashTableO3.out"
 
 echo "Compiling..."
 

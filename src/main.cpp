@@ -43,8 +43,6 @@ int main(int argc, char* argv[]){
     LPRINTF("buffer = %s, bufferSize = %llu", wordsBuffer, wordsFileSize);
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
-    
-
 
     for(size_t i = 0; i < N_TESTS; i++){
         testHashTable(&words);

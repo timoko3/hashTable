@@ -1,0 +1,1 @@
+hyperfine --export-json benchmarks/compareO2andO3.json "./hashTableO2.out -f test.txt" "./hashTableO3.out -f test.txt"
