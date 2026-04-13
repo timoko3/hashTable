@@ -4,6 +4,8 @@
 
 #include "hash.h"
 
+const int ROL_HASH_SHIFT = 5;
+
 hash_t hash(const void* ptr, size_t size){
     assert(ptr);
 
@@ -37,7 +39,7 @@ hash_t sumHash(hashData_t str){
     assert(str);
 
     hash_t sum = 0;
-    for(size_t i = 0; i < strlen(str); i++){
+    for(size_t i = 0; str[i] != '\0'; i++){
         sum += (hash_t) str[i];
     }
 
@@ -61,7 +63,7 @@ hash_t crcHash(hashData_t str){
 
     uint32_t crc = 0xFFFFFFFF;
 
-    for (size_t i = 0; i < strlen(str); i++) {
+    for(size_t i = 0; str[i] != '\0'; i++){
         crc ^= str[i];
 
         for(int j = 0; j < 8; j++){
@@ -82,8 +84,8 @@ hash_t rolHash(hashData_t str){
 
     uint32_t hash = 0;
 
-    for (size_t i = 0; i < strlen(str); i++){ // why strlen
-        hash = (hash << 5) | (hash >> 27);    // 5 // 27 = 8*4-1
+    for(size_t i = 0; str[i] != '\0'; i++){
+        hash = (hash << ROL_HASH_SHIFT) | (hash >> 32 - ROL_HASH_SHIFT);    
         hash ^= str[i];
     }
     
