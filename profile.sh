@@ -5,8 +5,9 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--g -O0 -fno-omit-frame-pointer
+-g -O1 -fno-omit-frame-pointer
 -fno-optimize-sibling-calls
+-fno-inline
 -fdebug-prefix-map=$(pwd)=.
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
@@ -52,7 +53,7 @@ src/hashTable.cpp
 src/measures/handler.cpp
 )
 
-OUT="hashTable.out"
+OUT="hashTableProfile.out"
 
 echo "Compiling..."
 
