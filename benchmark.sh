@@ -6,6 +6,7 @@ CXX="g++"
 
 CXXFLAGS=(
 -O3                
+-msse4.2
 -DNDEBUG           
 -march=native      
 -std=c++17
