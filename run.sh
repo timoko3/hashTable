@@ -5,7 +5,7 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--ggdb3 -std=c++17 -O0
+-ggdb3 -std=c++17 -O0 -msse4.2
 -Iinclude -Isrc
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts

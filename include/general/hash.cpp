@@ -2,6 +2,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <nmmintrin.h>
+
+#include "general/debug.h"
+
 #include "hash.h"
 
 const int ROL_HASH_SHIFT = 5;
@@ -121,4 +125,16 @@ hash_t murMurHash(hashData_t str){
     hash ^= hash >> 16;
 
     return (hash_t) hash; 
+}
+
+hash_t crcOptimizedHash(hashData_t str){
+    assert(str);
+
+    uint32_t crc = 0xFFFFFFFF;
+    
+    for(size_t i = 0; str[i] != '\0'; i++){
+        crc = _mm_crc32_u8(crc, (uint8_t)str[i]);
+    }
+
+    return (hash_t) (~crc);
 }
