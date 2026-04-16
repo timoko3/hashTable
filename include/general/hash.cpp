@@ -138,3 +138,29 @@ hash_t crcOptimizedHash(hashData_t str){
 
     return (hash_t) (~crc);
 }
+
+hash_t crcUnwrapOptimizedHash(hashData_t str){
+    assert(str);
+
+    uint64_t crc = 0xFFFFFFFFFFFFFFFF;
+
+    size_t len = strlen(str);
+    const uint8_t* p = (const uint8_t*)str;
+
+    while (len >= 8) {
+        uint64_t chunk;
+        memcpy(&chunk, p, sizeof(chunk));
+        crc = _mm_crc32_u64(crc, chunk);
+
+        p += 8;
+        len -= 8;
+    }
+
+    while (len > 0) {
+        crc = _mm_crc32_u8(crc, *p);
+        p++;
+        len--;
+    }
+
+    return ~crc;
+}

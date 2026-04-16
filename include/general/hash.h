@@ -15,3 +15,4 @@ hash_t rolHash(hashData_t str);
 hash_t murMurHash(hashData_t str);
 
 hash_t crcOptimizedHash(hashData_t str);
+hash_t crcUnwrapOptimizedHash(hashData_t str);
