@@ -10,6 +10,8 @@
 
 const int ROL_HASH_SHIFT = 5;
 
+static inline int hasZeroU64(uint64_t x);
+
 hash_t hash(const void* ptr, size_t size){
     assert(ptr);
 
@@ -137,4 +139,39 @@ hash_t crcOptimizedHash(hashData_t str){
     }
 
     return (hash_t) (~crc);
+}
+
+hash_t crcUnwrapOptimizedHash(hashData_t str){
+    assert(str);
+
+    uint32_t crc = 0xFFFFFFFF;
+
+    const unsigned char* strU = (const unsigned char*)str;
+
+    size_t i = 0;
+    while(true){
+        uint64_t chunk;
+        memcpy(&chunk, strU, sizeof(chunk));
+
+        if(hasZeroU64(chunk)){
+            break;
+        }
+
+        crc = _mm_crc32_u64(crc, (uint64_t)chunk);
+        strU += 8;
+    }
+    
+
+    while(*strU){
+        crc = _mm_crc32_u8(crc, (uint8_t)*strU);
+        strU++;
+    }
+
+    return (hash_t) (~crc);
+}
+
+static inline int hasZeroU64(uint64_t x){
+    return ((x - 0x0101010101010101ULL) & 
+           ~x & 
+           0x8080808080808080ULL) != 0;
 }
