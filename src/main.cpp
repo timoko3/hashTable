@@ -75,26 +75,26 @@ void testHashTable(words_t* words, size_t nSearches){
         hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
 
-    // // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
-    // //     listGraphDump(&hashTable.cells[i].value);
-    // // }
-
-    // int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    // assert(cellNumber);
-    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    // assert(cellAmountLoaded);
-
     // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
-    //     cellNumber[i] = i;
-
-    //     hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
-    //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/test.png");
+    int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
+    assert(cellNumber);
+    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
+    assert(cellAmountLoaded);
 
-    // free(cellNumber);
-    // free(cellAmountLoaded);
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
+        cellNumber[i] = i;
+
+        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
+        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    }
+
+    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/upgradedCrcHashLoad.png");
+
+    free(cellNumber);
+    free(cellAmountLoaded);
 
     int cellNum = 0;
     for(size_t i = 0; i < nSearches; i++){
