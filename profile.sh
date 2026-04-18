@@ -40,6 +40,7 @@ SRC=(
 include/cashFriendlyList/list.cpp
 include/cashFriendlyList/general_list.cpp
 include/cashFriendlyList/protection_list.cpp
+include/cashFriendlyList/optimizedStrcmp.o
 
 include/general/debug.cpp
 include/general/encode.cpp
