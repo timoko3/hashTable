@@ -9,7 +9,7 @@
 
 typedef char* listVal_t;
 
-const listVal_t LIST_POISON = "adkjadasdoahdaoidahdiaodhaoiahdaoidhasiodahdioadhas";
+const listVal_t LIST_POISON = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
 
 enum listStatus{
     PROCESS_OK,

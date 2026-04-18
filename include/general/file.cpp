@@ -77,7 +77,7 @@ FILE* myOpenFile(fileDescription* file){
 char* getTextToBuffer(FILE* inputFIle, size_t fileSize){
     assert(inputFIle);
 
-    char* buffer = (char*) calloc(fileSize + SIZE_OF_END_FILE, sizeof(char)); 
+    char* buffer = (char*) calloc(2 * fileSize + SIZE_OF_END_FILE, sizeof(char)); 
     assert(buffer);
     buffer[fileSize] = '\0';
 

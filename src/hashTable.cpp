@@ -17,7 +17,7 @@ const int SEARCH_NOT_FOUND_VALUE          = -1;
 bool hashTableCtor(hashTable_t* hashTable){
     HASH_TABLE_CAPACITY(hashTable)        = HASH_TABLE_CAPACITY_C; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
-    HASH_TABLE_FUNCTION(hashTable)        = crcUnwrapOptimizedHash;
+    HASH_TABLE_FUNCTION(hashTable)        = crcOptimizedHash;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_CAPACITY_C, sizeof(hashTableCell_t));
     assert(HASH_TABLE_CELLS(hashTable));
