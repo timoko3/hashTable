@@ -4,10 +4,10 @@ section .text
 global _start
 global optimizedStrcmp
 
-_start:
-    lea rdi, [str1]
-    lea rsi, [str2]
-    call optimizedStrcmp
+; _start:
+;     lea rdi, [str1]
+;     lea rsi, [str2]
+;     call optimizedStrcmp
 
 optimizedStrcmp:
     vmovdqu8 zmm0, [rdi]
@@ -26,5 +26,7 @@ optimizedStrcmp:
 
     ret
 
-str1 db "testasdfadsfasdfasdvabadbbfbgbfgbgfbdfbdfgbfdbdfgbdfgbdfgbdfgbdfgfdvdfvdfgbfgvfvdfbg", 0h
-str2 db "testasdfadsfasdfasdvabadbbfbgbfgbgfbdfbdfgbfdbdfgbdfgbdfgbdfgbdfgfdvdfvdfgbfgvfvdfbg", 0h
+str1 db "testasdfadsfasdfasdvabadbbfbgbfgbgfbdfbdfgbfdbdfgbdfgbdfgbdfgfff", 0h
+str2 db "testasdfadsfasdfasdvabadbbfbgbfgbgfbdfbdfgbfdbdfgbdfgbdfgbdfgfff", 0h
+
+section .note.GNU-stack noalloc noexec nowrite progbits

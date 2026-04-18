@@ -8,6 +8,10 @@
 #include <string.h>
 #include <assert.h>
 
+extern "C" {
+    int optimizedStrcmp(char* str1, char* str2);
+}
+
 #define verify(list) if(verifyList(list, __FUNCTION__, __FILE__, __LINE__) != PROCESS_OK) return list->status.type
 
 const int SEARCH_NOT_FOUND_VALUE = -1;
@@ -152,7 +156,7 @@ listStatus listFind(list_t* list, listVal_t findValue, int* findIndex){
     int curElem = *head(list);
     LPRINTF("size = %llu\n", list->size);
     for(size_t i = 0; i < list->size; i++){
-        if(!strcmp(findValue, *data(list, curElem))){
+        if(!optimizedStrcmp(findValue, *data(list, curElem))){
             *findIndex = curElem;
             break; 
         }
