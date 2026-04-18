@@ -10,6 +10,7 @@ CXXFLAGS=(
 -fno-inline
 -fdebug-prefix-map=$(pwd)=.
 -Iinclude -Isrc
+-msse4.2
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
 -Wconditionally-supported -Wconversion -Wctor-dtor-privacy
