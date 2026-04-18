@@ -155,6 +155,10 @@ listStatus listFind(list_t* list, listVal_t findValue, int* findIndex){
 
     int curElem = *head(list);
     LPRINTF("size = %llu\n", list->size);
+
+    // lprintf("str1: %s\n", findValue);
+    // lprintf("str2: %s\n", *data(list, curElem));
+    // lprintf("optimizedStrcmp: %d\n\n", optimizedStrcmp(findValue, *data(list, curElem)));
     for(size_t i = 0; i < list->size; i++){
         if(!optimizedStrcmp(findValue, *data(list, curElem))){
             *findIndex = curElem;

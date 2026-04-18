@@ -71,11 +71,8 @@ bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
 
     LPRINTF("addrListFindFunc = %p", curCell);
 
-    char strBuffer[64] = {0};
-    strcpy(strBuffer, str);
-
     int listSearchElemIndex = 0;
-    if(listFind(&HASH_TABLE_CELL_VALUE(curCell), strBuffer, &listSearchElemIndex)) *findCellNum = cellNumber;
+    if(listFind(&HASH_TABLE_CELL_VALUE(curCell), str, &listSearchElemIndex)) *findCellNum = cellNumber;
 
     return true;
 }
