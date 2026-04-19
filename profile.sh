@@ -5,10 +5,12 @@ set -e
 CXX="g++"
 
 CXXFLAGS=(
--g -O0 -fno-omit-frame-pointer
+-g -O1 -fno-omit-frame-pointer
 -fno-optimize-sibling-calls
+-fno-inline
 -fdebug-prefix-map=$(pwd)=.
 -Iinclude -Isrc
+-msse4.2
 -Wall -Wextra -Waggressive-loop-optimizations -Wc++14-compat
 -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts
 -Wconditionally-supported -Wconversion -Wctor-dtor-privacy
@@ -38,6 +40,7 @@ SRC=(
 include/cashFriendlyList/list.cpp
 include/cashFriendlyList/general_list.cpp
 include/cashFriendlyList/protection_list.cpp
+include/cashFriendlyList/optimizedStrcmp.o
 
 include/general/debug.cpp
 include/general/encode.cpp
@@ -52,7 +55,7 @@ src/hashTable.cpp
 src/measures/handler.cpp
 )
 
-OUT="hashTable.out"
+OUT="hashTableProfile.out"
 
 echo "Compiling..."
 

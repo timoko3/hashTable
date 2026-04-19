@@ -16,6 +16,7 @@ listStatus listInsertBefore(list_t* list, int insIndex, listVal_t insValue);
 listStatus lisInsertToHead(list_t* list, listVal_t insValue);
 listStatus listInsertToTail(list_t* list, listVal_t insValue);
 listStatus listDelete(list_t* list, int index);
+listStatus listFind(list_t* list, listVal_t findValue, int* findIndex);
 
 listStatus listOptimize(list_t* list);
 listStatus listLinearize(list_t* list);

@@ -12,22 +12,38 @@
 #include <malloc.h>
 #include <stdlib.h>
 
-const size_t MAX_FILE_NAME_LENGTH = 64;
-const size_t N_SEARCH             = 10e7; 
-const size_t N_TESTS              = 20;
+extern "C" {
+    int optimizedStrcmp(char* str1, char* str2);
+}
 
-void testHashTable(words_t* words);
+const size_t MAX_FILE_NAME_LENGTH   = 64;
+const size_t N_SEARCH               = 10e7; 
+const size_t N_TESTS                = 1;
+const size_t HASH_TABLE_CAPACITY_C  = 4000; 
+
+void testHashTable(words_t* words, size_t nSearches, size_t capacity);
 
 int main(int argc, char* argv[]){
-    char wordsFileName[MAX_FILE_NAME_LENGTH] = "";
-    if(argc == 3){
+    char wordsFileName[MAX_FILE_NAME_LENGTH] = "test.txt";
+    size_t nSearches = N_SEARCH;
+    size_t hashTableCapacity = HASH_TABLE_CAPACITY_C;
+    if(argc >= 3){
+        if(argc == 5 && !strcmp("-n", argv[3])){
+            nSearches = atoi(argv[4]);
+        }
+        else if(argc == 5 && !strcmp("-c", argv[3])){
+            hashTableCapacity = atoi(argv[4]);
+        }
+
         if(!strcmp("-f", argv[1])){
             strcpy(wordsFileName, argv[2]);
         }
+
         else{
             printf("incorrect option\n");
         }
     }
+
 
     fileDescription wordsFileDesc = {
         wordsFileName,
@@ -43,9 +59,9 @@ int main(int argc, char* argv[]){
     LPRINTF("buffer = %s, bufferSize = %llu", wordsBuffer, wordsFileSize);
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
-    
+
     for(size_t i = 0; i < N_TESTS; i++){
-        testHashTable(&words);
+        testHashTable(&words, nSearches, hashTableCapacity);
     }
 
     // dumpWords(&words);
@@ -57,10 +73,11 @@ int main(int argc, char* argv[]){
     return 0;
 }
 
-void testHashTable(words_t* words){
+void testHashTable(words_t* words, size_t nSearches, size_t capacity){
+    assert(words);
 
     hashTable_t hashTable;
-    hashTableCtor(&hashTable);
+    hashTableCtor(&hashTable, capacity);
 
     // char testStr[10] = "hello\n";
 
@@ -68,27 +85,30 @@ void testHashTable(words_t* words){
         hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
 
-    // for(size_t i = 0; i < hashTable.size; i++){
+    // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
     //     listGraphDump(&hashTable.cells[i].value);
     // }
 
-    // int* cellNumber       = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
     // assert(cellNumber);
-    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_SIZE((&hashTable)), sizeof(int));
+    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
     // assert(cellAmountLoaded);
 
-    // for(size_t i = 0; i < HASH_TABLE_SIZE((&hashTable)); i++){
+    // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
     //     cellNumber[i] = i;
 
     //     hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
     //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
     // }
 
-    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_SIZE((&hashTable)), "images/diagrams/murMurHashLoad.png");
+    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/upgradedCrcHashLoad.png");
+
+    // free(cellNumber);
+    // free(cellAmountLoaded);
 
     int cellNum = 0;
-    for(size_t i = 0; i < N_SEARCH; i++){
-        size_t index = rand() % HASH_TABLE_SIZE((&hashTable));
+    for(size_t i = 0; i < nSearches; i++){
+        size_t index = rand() % words->count;
         hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
     }
 
