@@ -101,14 +101,18 @@ hash_t rolHash(hashData_t str){
 hash_t murMurHash(hashData_t str){
     assert(str);
 
+    const uint8_t* data = (const uint8_t*) str;
+    const int len = strlen(str);
+    const int nblocks = len / 4;
+
     uint32_t hash = 0;
-    uint32_t c1   = 0xcc9e2d51;
-    uint32_t c2   = 0x1b873593;
 
-    int len       = strlen(str);
+    const uint32_t c1 = 0xcc9e2d51;
+    const uint32_t c2 = 0x1b873593;
 
-    for(size_t i = 0; i < len; i++){
-        uint32_t k = str[i];
+    for (int i = 0; i < nblocks; i++) {
+        uint32_t k;
+        memcpy(&k, data + i * 4, sizeof(uint32_t));
 
         k *= c1;
         k = (k << 15) | (k >> 17);
@@ -119,14 +123,30 @@ hash_t murMurHash(hashData_t str){
         hash = hash * 5 + 0xe6546b64;
     }
 
+    const uint8_t* tail = data + nblocks * 4;
+    uint32_t k = 0;
+
+    switch (len & 3) {
+        case 3: k ^= tail[2] << 16;
+        case 2: k ^= tail[1] << 8;
+        case 1:
+            k ^= tail[0];
+            k *= c1;
+            k = (k << 15) | (k >> 17);
+            k *= c2;
+            hash ^= k;
+    }
+
     hash ^= len;
+
     hash ^= hash >> 16;
     hash *= 0x85ebca6b;
     hash ^= hash >> 13;
     hash *= 0xc2b2ae35;
     hash ^= hash >> 16;
 
-    return (hash_t) hash; 
+    return (hash_t) hash;
+
 }
 
 hash_t crcOptimizedHash(hashData_t str){
