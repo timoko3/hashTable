@@ -9,20 +9,19 @@
 #include <string.h>
 #include <stdint.h>
 
-const size_t HASH_TABLE_CAPACITY_C        = 4000; 
 const size_t LIST_START_CAPACITY          = 3;
 
 const int SEARCH_NOT_FOUND_VALUE          = -1;
 
-bool hashTableCtor(hashTable_t* hashTable){
-    HASH_TABLE_CAPACITY(hashTable)        = HASH_TABLE_CAPACITY_C; 
+bool hashTableCtor(hashTable_t* hashTable, size_t capacity){
+    HASH_TABLE_CAPACITY(hashTable)        = capacity; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
     HASH_TABLE_FUNCTION(hashTable)        = crcOptimizedHash;
 
-    HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(HASH_TABLE_CAPACITY_C, sizeof(hashTableCell_t));
+    HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(capacity, sizeof(hashTableCell_t));
     assert(HASH_TABLE_CELLS(hashTable));
 
-    for(size_t i = 0; i < HASH_TABLE_CAPACITY_C; i++){
+    for(size_t i = 0; i < capacity; i++){
         HASH_TABLE_CELLS(hashTable)[i].value.capacity = LIST_START_CAPACITY; 
         listCtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
@@ -34,7 +33,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     assert(hashTable);
     assert(str);
 
-    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY_C;
+    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY(hashTable);
 
     LPRINTF("cellNumber = %llu", cellNumber);
 
@@ -63,7 +62,7 @@ bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
 
     *findCellNum = SEARCH_NOT_FOUND_VALUE;
 
-    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY_C;
+    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY(hashTable);
 
     LPRINTF("cellNumber = %llu", cellNumber);
 
@@ -78,7 +77,7 @@ bool hashTableFind(hashTable_t* hashTable, char* str, int* findCellNum){
 }
 
 bool hashTableDtor(hashTable_t* hashTable){
-    for(size_t i = 0; i < HASH_TABLE_CAPACITY_C; i++){
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY(hashTable); i++){
         listDtor(&HASH_TABLE_CELLS(hashTable)[i].value);
     }
 

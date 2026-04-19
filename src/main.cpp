@@ -16,18 +16,23 @@ extern "C" {
     int optimizedStrcmp(char* str1, char* str2);
 }
 
-const size_t MAX_FILE_NAME_LENGTH = 64;
-const size_t N_SEARCH             = 10e7; 
-const size_t N_TESTS              = 1;
+const size_t MAX_FILE_NAME_LENGTH   = 64;
+const size_t N_SEARCH               = 10e7; 
+const size_t N_TESTS                = 1;
+const size_t HASH_TABLE_CAPACITY_C  = 4000; 
 
-void testHashTable(words_t* words, size_t nSearches);
+void testHashTable(words_t* words, size_t nSearches, size_t capacity);
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "test.txt";
     size_t nSearches = N_SEARCH;
+    size_t hashTableCapacity = HASH_TABLE_CAPACITY_C;
     if(argc >= 3){
         if(argc == 5 && !strcmp("-n", argv[3])){
             nSearches = atoi(argv[4]);
+        }
+        else if(argc == 5 && !strcmp("-c", argv[3])){
+            hashTableCapacity = atoi(argv[4]);
         }
 
         if(!strcmp("-f", argv[1])){
@@ -56,7 +61,7 @@ int main(int argc, char* argv[]){
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
 
     for(size_t i = 0; i < N_TESTS; i++){
-        testHashTable(&words, nSearches);
+        testHashTable(&words, nSearches, hashTableCapacity);
     }
 
     // dumpWords(&words);
@@ -68,11 +73,11 @@ int main(int argc, char* argv[]){
     return 0;
 }
 
-void testHashTable(words_t* words, size_t nSearches){
+void testHashTable(words_t* words, size_t nSearches, size_t capacity){
     assert(words);
 
     hashTable_t hashTable;
-    hashTableCtor(&hashTable);
+    hashTableCtor(&hashTable, capacity);
 
     // char testStr[10] = "hello\n";
 
@@ -103,7 +108,7 @@ void testHashTable(words_t* words, size_t nSearches){
 
     int cellNum = 0;
     for(size_t i = 0; i < nSearches; i++){
-        size_t index = rand() % HASH_TABLE_CAPACITY((&hashTable));
+        size_t index = rand() % words->count;
         hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
     }
 
