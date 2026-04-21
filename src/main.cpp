@@ -81,9 +81,11 @@ void testHashTable(words_t* words, size_t nSearches, size_t capacity){
 
     // char testStr[10] = "hello\n";
 
+    
     for(size_t curWord = 0; curWord < words->count; curWord++){
         hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
+    lprintf("countWords = %llu", HASH_TABLE_AMOUNT_ELEMENTS((&hashTable)));
 
     // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
     //     listGraphDump(&hashTable.cells[i].value);
