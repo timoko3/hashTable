@@ -28,7 +28,6 @@ struct hashFunctionInfo_t {
 
 hashFunctionInfo_t hashFuncsInfo[] = {
     {constHash,    "images/diagrams/constHashLoad.png"    },
-    {lenHash,      "images/diagrams/lenHashLoad.png"      },
     {sumHash,      "images/diagrams/sumHashLoad.png"      },
     {firstSymHash, "images/diagrams/firstSymHashLoad.png" },
     {gnuHash,      "images/diagrams/gnuHashLoad.png"      },

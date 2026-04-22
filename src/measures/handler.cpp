@@ -63,19 +63,19 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
     fprintf(pyDiagramFile, "std = %.2f\n",  std);
 
     fprintf(pyDiagramFile, "colors = []\n");
-    fprintf(pyDiagramFile, "for v in values:\n",             std);
-    fprintf(pyDiagramFile, "\tif v > mean + std:\n",         std);
-    fprintf(pyDiagramFile, "\t\tcolors.append('red')\n",     std);
-    fprintf(pyDiagramFile, "\telif v < mean - std:\n",             std);
-    fprintf(pyDiagramFile, "\t\tcolors.append('red')\n",  std);
-    fprintf(pyDiagramFile, "\telse:\n",  std);
-    fprintf(pyDiagramFile, "\t\tcolors.append('green')\n",   std);
+    fprintf(pyDiagramFile, "for v in values:\n");
+    fprintf(pyDiagramFile, "\tif v > mean + std:\n");
+    fprintf(pyDiagramFile, "\t\tcolors.append('red')\n");
+    fprintf(pyDiagramFile, "\telif v < mean - std:\n");
+    fprintf(pyDiagramFile, "\t\tcolors.append('red')\n");
+    fprintf(pyDiagramFile, "\telse:\n");
+    fprintf(pyDiagramFile, "\t\tcolors.append('green')\n");
     
-    fprintf(pyDiagramFile, "plt.bar(cellNum, values, color = colors, alpha=0.8)\n");
+    fprintf(pyDiagramFile, "plt.bar(range(len(values)), values, color = colors, alpha=0.8)\n");
 
     fprintf(pyDiagramFile, "stats = (\n");
     // fprintf(pyDiagramFile, "f\"Среднее: %.2f\\n\"\n", mean);
-    fprintf(pyDiagramFile, "f\"Стандартное отклонение:  %.2f\\n\"\n", std );
+    fprintf(pyDiagramFile, "f\"Стандартное отклонение:  %.2f\\n\"\n");
     fprintf(pyDiagramFile, "f\"Коэф. вариации:   %.2f\\n\"\n", cv  );
     fprintf(pyDiagramFile, "f\"пустые ячейки: {values.count(0)}\"\n");
     fprintf(pyDiagramFile, ")\n");

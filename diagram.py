@@ -18,7 +18,7 @@ for v in values:
 		colors.append('red')
 	else:
 		colors.append('green')
-plt.bar(cellNum, values, color = colors, alpha=0.8)
+plt.bar(range(200), values[:200], color = colors, alpha=0.8)
 stats = (
 f"Стандартное отклонение:  113.77\n"
 f"Коэф. вариации:   20.03\n"
