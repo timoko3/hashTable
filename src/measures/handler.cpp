@@ -30,7 +30,7 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
 
     fprintf(pyDiagramFile, "cellNum = [");
     for(size_t i = 0; i < nValues; i++){
-        fprintf(pyDiagramFile, "'%d'", x[i]);
+        fprintf(pyDiagramFile, "%d", x[i]);
         if(i != (nValues - 1)) fprintf(pyDiagramFile, ",");
     }
     fprintf(pyDiagramFile, "]\n");

@@ -21,7 +21,25 @@ const size_t N_SEARCH               = 10e7;
 const size_t N_TESTS                = 1;
 const size_t HASH_TABLE_CAPACITY_C  = 4000; 
 
+struct hashFunctionInfo_t {
+    hashFunction_t ptr;
+    const char*    nameDiagram;
+};
+
+hashFunctionInfo_t hashFuncsInfo[] = {
+    {constHash,    "images/diagrams/constHashLoad.png"    },
+    {lenHash,      "images/diagrams/lenHashLoad.png"      },
+    {sumHash,      "images/diagrams/sumHashLoad.png"      },
+    {firstSymHash, "images/diagrams/firstSymHashLoad.png" },
+    {gnuHash,      "images/diagrams/gnuHashLoad.png"      },
+    {crcHash,      "images/diagrams/crcHashLoad.png"      },
+    {rolHash,      "images/diagrams/rolHashLoad.png"      },
+    {murMurHash,   "images/diagrams/murMurHashLoad.png"   }
+};
+
 void testHashTable(words_t* words, size_t nSearches, size_t capacity);
+
+void buildDiagramWrap(hashTable_t* hashTable, const char* fileName);
 
 int main(int argc, char* argv[]){
     char wordsFileName[MAX_FILE_NAME_LENGTH] = "test.txt";
@@ -60,9 +78,26 @@ int main(int argc, char* argv[]){
 
     words_t words = divideBufferToWords(wordsBuffer, wordsFileSize);
 
-    for(size_t i = 0; i < N_TESTS; i++){
-        testHashTable(&words, nSearches, hashTableCapacity);
+    // for(size_t i = 0; i < N_TESTS; i++){
+    //     testHashTable(&words, nSearches, hashTableCapacity);
+    // }
+
+    for(size_t i = 0; i < sizeof(hashFuncsInfo) / sizeof(hashFunctionInfo_t); i++){
+        hashTable_t hashTable;
+        hashTableCtor(&hashTable, hashTableCapacity);
+        HASH_TABLE_FUNCTION((&hashTable)) = hashFuncsInfo[i].ptr;
+
+        for(size_t curWord = 0; curWord < words.count; curWord++){
+            hashTableInsert(&hashTable, words.ptrs[curWord].ptr);
+        }
+        
+        lprintf("countWords = %llu", HASH_TABLE_AMOUNT_ELEMENTS((&hashTable)));
+
+        buildDiagramWrap(&hashTable, hashFuncsInfo[i].nameDiagram);
+
+        hashTableDtor(&hashTable);
     }
+
 
     // dumpWords(&words);
 
@@ -79,30 +114,10 @@ void testHashTable(words_t* words, size_t nSearches, size_t capacity){
     hashTable_t hashTable;
     hashTableCtor(&hashTable, capacity);
 
-    // char testStr[10] = "hello\n";
-
-    
     for(size_t curWord = 0; curWord < words->count; curWord++){
         hashTableInsert(&hashTable, words->ptrs[curWord].ptr);
     }
     lprintf("countWords = %llu", HASH_TABLE_AMOUNT_ELEMENTS((&hashTable)));
-
-    int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    assert(cellNumber);
-    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    assert(cellAmountLoaded);
-
-    for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
-        cellNumber[i] = i;
-
-        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
-        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
-    }
-
-    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/murMurHashLoad.png");
-
-    free(cellNumber);
-    free(cellAmountLoaded);
 
     // int cellNum = 0;
     // for(size_t i = 0; i < nSearches; i++){
@@ -112,4 +127,27 @@ void testHashTable(words_t* words, size_t nSearches, size_t capacity){
     // }
 
     hashTableDtor(&hashTable);
+
+}
+
+void buildDiagramWrap(hashTable_t* hashTable, const char* fileName){
+    assert(hashTable);
+
+    int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((hashTable)), sizeof(int));
+    assert(cellNumber);
+    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((hashTable)), sizeof(int));
+    assert(cellAmountLoaded);
+
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY((hashTable)); i++){
+        cellNumber[i] = i;
+
+        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((hashTable))[i]);
+        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
+    }
+
+    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((hashTable)), fileName);
+
+    free(cellNumber);
+    free(cellAmountLoaded);
+
 }

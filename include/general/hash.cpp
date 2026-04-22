@@ -32,7 +32,7 @@ hash_t constHash(hashData_t str){
 hash_t lenHash(hashData_t str){
     assert(str);
 
-    return strlen(str);
+    return (hash_t) strlen(str);
 }
 
 hash_t firstSymHash(hashData_t str){
