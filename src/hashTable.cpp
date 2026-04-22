@@ -33,7 +33,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     assert(hashTable);
     assert(str);
 
-    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY(hashTable);
+    size_t cellNumber = crcHash (str) % HASH_TABLE_CAPACITY(hashTable);
 
     LPRINTF("cellNumber = %llu", cellNumber);
 
