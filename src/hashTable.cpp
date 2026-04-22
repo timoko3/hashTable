@@ -16,7 +16,7 @@ const int SEARCH_NOT_FOUND_VALUE          = -1;
 bool hashTableCtor(hashTable_t* hashTable, size_t capacity){
     HASH_TABLE_CAPACITY(hashTable)        = capacity; 
     HASH_TABLE_AMOUNT_ELEMENTS(hashTable) = 0; 
-    HASH_TABLE_FUNCTION(hashTable)        = crcOptimizedHash;
+    HASH_TABLE_FUNCTION(hashTable)        = crcHash;
 
     HASH_TABLE_CELLS(hashTable)           = (hashTableCell_t*) calloc(capacity, sizeof(hashTableCell_t));
     assert(HASH_TABLE_CELLS(hashTable));
@@ -33,7 +33,7 @@ bool hashTableInsert(hashTable_t* hashTable, char* str){
     assert(hashTable);
     assert(str);
 
-    size_t cellNumber = HASH_TABLE_FUNCTION(hashTable) (str) % HASH_TABLE_CAPACITY(hashTable);
+    size_t cellNumber = crcHash (str) % HASH_TABLE_CAPACITY(hashTable);
 
     LPRINTF("cellNumber = %llu", cellNumber);
 
