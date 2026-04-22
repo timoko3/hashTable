@@ -157,12 +157,12 @@ listStatus listFind(list_t* list, listVal_t findValue, int* findIndex){
     LPRINTF("size = %llu\n", list->size);
     
     for(size_t i = 0; i < list->size; i++){
-        if(!optimizedStrcmp(findValue, list->elem[curElem].data)){
+        if(!strcmp(findValue, list->elem[curElem].data)){
             *findIndex = curElem;
             break; 
         }
         
-        curElem = *next(list, curElem);
+        curElem = list->elem[curElem].next;
     }
 
     return PROCESS_OK;

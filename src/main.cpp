@@ -19,7 +19,7 @@ extern "C" {
 const size_t MAX_FILE_NAME_LENGTH   = 64;
 const size_t N_SEARCH               = 10e7; 
 const size_t N_TESTS                = 1;
-const size_t HASH_TABLE_CAPACITY_C  = 20000; 
+const size_t HASH_TABLE_CAPACITY_C  = 4000; 
 
 void testHashTable(words_t* words, size_t nSearches, size_t capacity);
 
