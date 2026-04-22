@@ -66,15 +66,15 @@ void buildDiagram(int* x, int* y, int nValues, const char* fileName){
     fprintf(pyDiagramFile, "for v in values:\n",             std);
     fprintf(pyDiagramFile, "\tif v > mean + std:\n",         std);
     fprintf(pyDiagramFile, "\t\tcolors.append('red')\n",     std);
-    fprintf(pyDiagramFile, "\telif v > mean:\n",             std);
-    fprintf(pyDiagramFile, "\t\tcolors.append('orange')\n",  std);
+    fprintf(pyDiagramFile, "\telif v < mean - std:\n",             std);
+    fprintf(pyDiagramFile, "\t\tcolors.append('red')\n",  std);
     fprintf(pyDiagramFile, "\telse:\n",  std);
     fprintf(pyDiagramFile, "\t\tcolors.append('green')\n",   std);
     
     fprintf(pyDiagramFile, "plt.bar(cellNum, values, color = colors, alpha=0.8)\n");
 
     fprintf(pyDiagramFile, "stats = (\n");
-    fprintf(pyDiagramFile, "f\"Среднее: %.2f\\n\"\n", mean);
+    // fprintf(pyDiagramFile, "f\"Среднее: %.2f\\n\"\n", mean);
     fprintf(pyDiagramFile, "f\"Стандартное отклонение:  %.2f\\n\"\n", std );
     fprintf(pyDiagramFile, "f\"Коэф. вариации:   %.2f\\n\"\n", cv  );
     fprintf(pyDiagramFile, "f\"пустые ячейки: {values.count(0)}\"\n");

@@ -87,33 +87,29 @@ void testHashTable(words_t* words, size_t nSearches, size_t capacity){
     }
     lprintf("countWords = %llu", HASH_TABLE_AMOUNT_ELEMENTS((&hashTable)));
 
-    // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
-    //     listGraphDump(&hashTable.cells[i].value);
-    // }
+    int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
+    assert(cellNumber);
+    int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
+    assert(cellAmountLoaded);
 
-    // int* cellNumber       = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    // assert(cellNumber);
-    // int* cellAmountLoaded = (int*) calloc(HASH_TABLE_CAPACITY((&hashTable)), sizeof(int));
-    // assert(cellAmountLoaded);
+    for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
+        cellNumber[i] = i;
 
-    // for(size_t i = 0; i < HASH_TABLE_CAPACITY((&hashTable)); i++){
-    //     cellNumber[i] = i;
-
-    //     hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
-    //     cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
-    // }
-
-    // buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/upgradedCrcHashLoad.png");
-
-    // free(cellNumber);
-    // free(cellAmountLoaded);
-
-    int cellNum = 0;
-    for(size_t i = 0; i < nSearches; i++){
-        // size_t index = rand() % words->count;
-        size_t index = rand() % 4000;
-        hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
+        hashTableCell_t* curCell = &(HASH_TABLE_CELLS((&hashTable))[i]);
+        cellAmountLoaded[i] =  HASH_TABLE_CELL_VALUE(curCell).size;
     }
+
+    buildDiagram(cellNumber, cellAmountLoaded, HASH_TABLE_CAPACITY((&hashTable)), "images/diagrams/murMurHashLoad.png");
+
+    free(cellNumber);
+    free(cellAmountLoaded);
+
+    // int cellNum = 0;
+    // for(size_t i = 0; i < nSearches; i++){
+    //     // size_t index = rand() % words->count;
+    //     size_t index = rand() % 4000;
+    //     hashTableFind(&hashTable, words->ptrs[index].ptr, &cellNum);
+    // }
 
     hashTableDtor(&hashTable);
 }
